@@ -1,9 +1,9 @@
-﻿using Company2.ContextFactory;
-using Contracts;
+﻿using Contracts;
 using LoggerService;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Repository;
+using Service;
+using Service.Contracts;
 
 namespace Company2.Extensions
 {
@@ -28,6 +28,13 @@ namespace Company2.Extensions
 
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+        public static void ConfigureServiceManager(this IServiceCollection services) =>
+            services.AddScoped<IServiceManager, ServiceManager>();
+
+        public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration) =>
+            services.AddDbContext<RepositoryContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("sqlConnection")));
 
     }
 }

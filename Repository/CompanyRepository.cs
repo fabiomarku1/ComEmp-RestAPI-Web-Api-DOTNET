@@ -8,11 +8,12 @@ using Entities.Models;
 
 namespace Repository
 {
-    internal class CompanyRepository:RepositoryBase<Company>,ICompanyRepository
+    public class CompanyRepository:RepositoryBase<Company>,ICompanyRepository
     {
         public CompanyRepository(RepositoryContext context) : base(context)
         {
-
         }
+        public IEnumerable<Company> GetAllCompanies(bool trackChanges)=> FindAll(trackChanges).OrderBy(e=> e.Name).ToList();
+        public Company GetCompany(int id) => FindById(id);
     }
 }
