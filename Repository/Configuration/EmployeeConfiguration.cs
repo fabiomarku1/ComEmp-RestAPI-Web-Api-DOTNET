@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Repository.Configuration
 {
-    public class EmployeeConfiguration:IEntityTypeConfiguration<Employee>
+    public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.HasData(
                 new Employee
                 {
-                    Id=1,
+                    Id = 1,
                     Name = "Fabio Marku",
                     Age = 21,
                     Position = "DIRECTOR",
@@ -24,13 +24,21 @@ namespace Repository.Configuration
                 },
                 new Employee
                 {
-                    Id=2,
+                    Id = 2,
                     Name = "MarkuFabio",
                     Age = 24,
                     Position = "Employee",
                     CompanyId = 22,
+                },
+                new Employee
+                {
+                    Id = 3,
+                    Name = "Test",
+                    Age = 25,
+                    Position = "TestPosition",
+                    CompanyId = 22,
                 }
-                
+
                 );
 
 
