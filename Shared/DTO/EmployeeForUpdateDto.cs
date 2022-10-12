@@ -2,5 +2,4 @@
 
 namespace Shared.DTO;
 
-
-public record EmployeeForCreationDto:EmployeeForManipulationDto;
+public record EmployeeForUpdateDto:EmployeeForManipulationDto;

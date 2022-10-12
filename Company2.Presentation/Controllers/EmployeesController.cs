@@ -7,6 +7,7 @@ using Entities.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO;
+using Shared.RequestFeatures;
 
 namespace Company2.Presentation.Controllers
 {
@@ -24,29 +25,56 @@ namespace Company2.Presentation.Controllers
 
 
         [HttpGet]
-        public IActionResult GetEmployees(int companyId)
+        [HttpHead]
+        public async Task<IActionResult> GetEmployees(int companyId, [FromQuery] EmployeeParameters employeeParameters)
         {
-            var employees = _service.EmployeeService.GetEmployeesService(companyId, false);
+            var employees = await _service.EmployeeService.GetEmployeesAsync(companyId, employeeParameters, false);
             return Ok(employees);
         }
 
         [HttpGet("{employeeId:int}", Name = "GetSpecificEmployee")]
-        public IActionResult GetSpecificEmployee(int companyId, int employeeId)
+        public async Task<IActionResult> GetSpecificEmployee(int companyId, int employeeId)
         {
-            var employee = _service.EmployeeService.GetEmployee(employeeId, companyId);
+            var employee = await _service.EmployeeService.GetEmployeeAsync(employeeId, companyId, false);
             return Ok(employee);
         }
 
+
         [HttpPost]
-        public IActionResult CreateEmployee(int companyId, [FromBody] EmployeeForCreationDto request)
+        public async Task<IActionResult> CreateEmployee(int companyId, [FromBody] EmployeeForCreationDto request)
         {
             if (request == null) return BadRequest("Field is null");
-            var employee = _service.EmployeeService.CreateEmployeeForCompanyService(companyId, request, false);
+
+
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+            var employee = await _service.EmployeeService.CreateEmployeeForCompanyServiceAsync(companyId, request, false);
 
             return CreatedAtRoute("GetSpecificEmployee", new { companyId, employeeId = employee.Id }, employee);
+        }
 
+
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> UpdateEmployee(int companyId, int id, [FromBody] EmployeeForUpdateDto request)
+        {
+            if (request == null) return BadRequest("Employe for update is null");
+
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState);
+
+
+            await _service.EmployeeService.UpdateEmployeeForCompanyAsync(companyId, id, request, false, true);
+            return NoContent();
+        }
+
+
+
+        [HttpDelete("{employeeId:int}")]
+        public async Task<IActionResult> DeleteEmployee(int companyId, int employeeId)
+        {
+            await _service.EmployeeService.DeleteEmployeeForCompanyAsync(companyId, employeeId, false);
+            return NoContent();
 
         }
+
 
 
     }
