@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Company2.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20221013081723_addedRoles")]
+    partial class addedRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace Company2.Migrations
                             Id = 11,
                             Address = "Lezhe",
                             Country = "Albania",
-                            DateCreated = new DateTime(2022, 10, 13, 14, 18, 7, 146, DateTimeKind.Local).AddTicks(9716),
+                            DateCreated = new DateTime(2022, 10, 13, 10, 17, 23, 203, DateTimeKind.Local).AddTicks(8633),
                             Name = "Fabio"
                         },
                         new
@@ -65,7 +68,7 @@ namespace Company2.Migrations
                             Id = 22,
                             Address = "Tirane",
                             Country = "Albania",
-                            DateCreated = new DateTime(2022, 10, 13, 14, 18, 7, 146, DateTimeKind.Local).AddTicks(9758),
+                            DateCreated = new DateTime(2022, 10, 13, 10, 17, 23, 203, DateTimeKind.Local).AddTicks(8691),
                             Name = "Marku"
                         });
                 });
@@ -178,12 +181,6 @@ namespace Company2.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -236,15 +233,15 @@ namespace Company2.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "96cc7432-146f-4b30-9bdf-49163e2f023b",
-                            ConcurrencyStamp = "b15a3e52-9152-4933-a967-de856dbd3608",
+                            Id = "6b05edcb-e230-4de6-b60a-d22f1c6a0cfc",
+                            ConcurrencyStamp = "ac8b8345-afa2-4c9f-b85a-3d39c79f0145",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "8f5f3144-9d32-44ed-b24d-98062a0e853d",
-                            ConcurrencyStamp = "893c1e87-a8b3-480a-8c65-b3884a931c8d",
+                            Id = "9362f1f4-8587-490f-a197-e47943be6e9c",
+                            ConcurrencyStamp = "5619e54d-91ed-4c6e-abb0-87037d74bd69",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         });

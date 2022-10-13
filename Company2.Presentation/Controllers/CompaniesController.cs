@@ -1,6 +1,7 @@
 ﻿using Company2.Presentation.ModelBinders;
 using Entities.Exceptions;
 using Entities.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DTO;
@@ -25,7 +26,8 @@ namespace Company2.Presentation.Controllers
             return Ok();
         }
 
-        [HttpGet]
+        [HttpGet(Name = "GetCompanies")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> GetCompanies()
         {
             var companies = await _services.CompanyService.GetAllCompaniesAsync(false);

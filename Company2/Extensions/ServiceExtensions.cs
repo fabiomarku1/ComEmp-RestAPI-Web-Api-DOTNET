@@ -1,10 +1,16 @@
-﻿using Company2.Presentation.Controllers;
+﻿using System.Text;
+using Company2.ActionFilters;
+using Company2.Presentation.Controllers;
 using Contracts;
+using Entities.Models;
 using LoggerService;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Repository;
 using Service;
 using Service.Contracts;
@@ -50,8 +56,6 @@ namespace Company2.Extensions
                 opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
                 opt.Conventions.Controller<CompaniesController>()
                     .HasApiVersion(new ApiVersion(1, 0));
-                opt.Conventions.Controller<CompaniesV2Controller>()
-                    .HasDeprecatedApiVersion(new ApiVersion(2, 0));
             });
         }
         public static void ConfigureResponseCaching(this IServiceCollection services) => services.AddResponseCaching();
@@ -68,6 +72,52 @@ namespace Company2.Extensions
             validateOpt.MustRevalidate = true;
         }
             );
+
+
+        public static void ConfigureIdentity(this IServiceCollection service)
+        {
+            var builder = service.AddIdentity<User, IdentityRole>(o =>
+                {
+                    o.Password.RequireDigit = true;
+                    o.Password.RequireLowercase = true;
+                    o.Password.RequireUppercase = true;
+                    o.Password.RequireNonAlphanumeric = true;
+                    o.Password.RequiredLength = 10;
+                    o.User.RequireUniqueEmail = true;
+                }).AddEntityFrameworkStores<RepositoryContext>()
+                .AddDefaultTokenProviders();
+        }
+
+
+        public static void ConfigureValidationAttribute(this IServiceCollection services) =>
+            services.AddScoped<ValidationFilterAttribute>();
+
+
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration
+            configuration)
+        {
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            var secretKey = Environment.GetEnvironmentVariable("SECRET");
+            services.AddAuthentication(opt =>
+                {
+                    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings["validIssuer"],
+                        ValidAudience = jwtSettings["validAudience"],
+                        IssuerSigningKey = new
+                            SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                    };
+                });
+        }
 
     }
 }

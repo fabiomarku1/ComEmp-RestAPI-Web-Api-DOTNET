@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository;
 
@@ -11,9 +12,11 @@ using Repository;
 namespace Company2.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20221013080937_CreateIdentityTables")]
+    partial class CreateIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +60,7 @@ namespace Company2.Migrations
                             Id = 11,
                             Address = "Lezhe",
                             Country = "Albania",
-                            DateCreated = new DateTime(2022, 10, 13, 14, 18, 7, 146, DateTimeKind.Local).AddTicks(9716),
+                            DateCreated = new DateTime(2022, 10, 13, 10, 9, 37, 388, DateTimeKind.Local).AddTicks(4995),
                             Name = "Fabio"
                         },
                         new
@@ -65,7 +68,7 @@ namespace Company2.Migrations
                             Id = 22,
                             Address = "Tirane",
                             Country = "Albania",
-                            DateCreated = new DateTime(2022, 10, 13, 14, 18, 7, 146, DateTimeKind.Local).AddTicks(9758),
+                            DateCreated = new DateTime(2022, 10, 13, 10, 9, 37, 388, DateTimeKind.Local).AddTicks(5036),
                             Name = "Marku"
                         });
                 });
@@ -178,12 +181,6 @@ namespace Company2.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -232,22 +229,6 @@ namespace Company2.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "96cc7432-146f-4b30-9bdf-49163e2f023b",
-                            ConcurrencyStamp = "b15a3e52-9152-4933-a967-de856dbd3608",
-                            Name = "Manager",
-                            NormalizedName = "MANAGER"
-                        },
-                        new
-                        {
-                            Id = "8f5f3144-9d32-44ed-b24d-98062a0e853d",
-                            ConcurrencyStamp = "893c1e87-a8b3-480a-8c65-b3884a931c8d",
-                            Name = "Administrator",
-                            NormalizedName = "ADMINISTRATOR"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
