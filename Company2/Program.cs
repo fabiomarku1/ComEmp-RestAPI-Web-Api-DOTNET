@@ -36,8 +36,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 
 builder.Services.AddControllers().AddApplicationPart(typeof(Company2.Presentation.AssemblyReference).Assembly);
-
-
+builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 
@@ -65,5 +64,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseSwagger();
+app.UseSwaggerUI(s =>
+{
+    s.SwaggerEndpoint("/swagger/v1/swagger.json", "Code Maze API v1");
+});
+
 
 app.Run();
